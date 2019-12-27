@@ -58,7 +58,6 @@ func Index(router *gin.Engine) {
 			c.String(http.StatusOK, "%s", data)
 		default:
 			c.String(http.StatusOK, "Empty")
-
 		}
 	})
 
@@ -66,7 +65,8 @@ func Index(router *gin.Engine) {
 
 // 数据校验
 func validator(k KafkaInfo) bool {
-	if k.KafkaIP != "" && k.Message.Content != "" && k.Message.Topic != "" && 0 > k.Message.Number && k.Message.Number <= 60 && len(k.KafkaIP) >= 12 {
+
+	if k.KafkaIP != "" && k.Message.Content != "" && k.Message.Topic != "" && k.Message.Number > 0 && k.Message.Number <= 60 && len(k.KafkaIP) >= 12 {
 		return true
 	}
 
