@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Kafka可用性测试 - 运维部</title>
+    <link rel="stylesheet" href="static/css/css.css">
+    <link href="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery.form/4.2.2/jquery.form.min.js"></script>
+    <script src="https://cdn.bootcss.com/semantic-ui/2.4.1/semantic.min.js"></script>
+    <script src="/static/js/js.js"></script>
+</head>
+<body>
+<div id="body" class="ui raised very padded text container segment">
+
+    <h2 class="ui header" id="title">
+        <i class="settings icon"></i>
+        <div class="content">
+            Kafka 生产者/消费者测试
+        </div>
+    </h2>
+
+    <form id="mainForm" method="post" class="ui form" action="/" target="nm_iframe">
+        <h4 class="ui dividing header">请输入Kafka信息</h4>
+
+        <div class="field">
+            <label>Kafka 信息</label>
+            <div class="fields">
+                <div class="eleven wide field">
+                    <input type="text" name="kafkaIP" placeholder="IP:Port">
+                </div>
+                *多个地址逗号分隔
+
+            </div>
+        </div>
+
+
+        <h4 class="ui dividing header">消息详情</h4>
+
+        <div class="fields">
+            <div class="seven wide field">
+                <label>消息内容</label>
+                <input type="text" name="messageContent" maxlength="16" placeholder="Message Content">
+            </div>
+
+            <div class="four wide field">
+                <label>发送次数</label>
+                <input id="messageNumber" type="text" name="messageNumber" maxlength="3" placeholder="Message Number">
+            </div>
+
+            <div class="four wide field">
+                <label>Topic名称</label>
+                <input type="text" name="kafkaTopic" placeholder="Topic Name">
+            </div>
+
+        </div>
+
+        <button id="getStart" class="ui primary button" type="submit">开始</button>
+        <button id="getReset" class="ui secondary button" type="button">重置</button>
+
+        <div class="ui error message"></div>
+
+    </form>
+
+    <iframe id="id_iframe" name="nm_iframe" style="display:none;"></iframe>
+
+</div>
+
+<div id="output1" class="ui raised very padded text container segment">
+    消费消息：<br>
+</div>
+</body>
+</html>

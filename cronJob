@@ -1,0 +1,71 @@
+package main
+
+import (
+	"awesomeProject1/utils"
+	"fmt"
+	"github.com/fsnotify/fsnotify"
+	"github.com/robfig/cron/v3"
+	"github.com/spf13/viper"
+	"log"
+	"sync"
+)
+
+type kafkaConfig struct {
+	Ip    []string
+	Topic string
+}
+
+func kafkaCheck(wg *sync.WaitGroup) {
+	defer wg.Done()
+
+	kafka := &kafkaConfig{}
+	var chCron = make(chan interface{}, 128)
+	loadConfig(kafka)
+
+	// 创建计划任务
+	crontab := cron.New()
+	crontab.AddFunc("*/1 * * * *", func() {
+
+		wg.Add(1)
+		utils.SyncProducer(kafka.Ip[0], 1, "cronTestMessage", kafka.Topic, wg,)
+
+		wg.Add(1)
+		utils.KafkaConsumer(kafka.Ip[0], kafka.Topic, 1, wg, chCron)
+
+		select {
+		case <-chCron:
+			fmt.Println("正常")
+		default:
+			utils.SendChat("kafka 写入故障")
+
+		}
+
+	})
+
+	crontab.Start()
+
+}
+
+func loadConfig(kafka *kafkaConfig) {
+
+	// viper init
+	config := viper.New()
+	config.AddConfigPath("./config")
+	config.SetConfigName("cronjobkafka")
+	config.SetConfigType("json")
+	if err := config.ReadInConfig(); err != nil {
+		log.Fatal("readInConfig", err)
+	}
+
+	kafka.Ip = config.GetStringSlice("ipPort")
+	kafka.Topic = "topic"
+
+	//viper Watch
+	config.WatchConfig()
+	config.OnConfigChange(func(e fsnotify.Event) {
+		kafka.Ip = config.GetStringSlice("ipPort")
+		kafka.Topic = "topic"
+		fmt.Println("Config File Changed", e.Name)
+	})
+
+}

@@ -1,0 +1,25 @@
+.ui.container {
+    margin-top: 5%;
+}
+
+
+#body {
+    margin-top: 7%;
+}
+
+#producer {
+    float: left;
+    margin-right: 10px;
+    display: inline;
+
+}
+
+#consumer {
+    float: left;
+    display: inline;
+}
+
+#abc{
+    float: left;
+    display: inline;
+}
