@@ -59,6 +59,7 @@ func consumePartition(consumer sarama.Consumer, partition int32, times int, topi
 	partitionConsumer, err := consumer.ConsumePartition(topic, partition, sarama.OffsetNewest)
 	if err != nil {
 		log.Println(err)
+		ch <- err
 		return
 	}
 	defer func() {

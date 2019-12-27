@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
 )
 
@@ -8,6 +9,8 @@ func main() {
 
 	// 初始化web
 	router := gin.Default()
+
+	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Static("/static/css", "./static/css")
 	router.Static("/static/js", "./static/js")
 
