@@ -72,8 +72,8 @@ $().ready(function () {
 // 开始检测
 function mainStart() {
 
-    $(this).attr("class", "ui disabled button");
-    $(this).html("检测中...");
+    $("#getStart").attr("class", "ui disabled button");
+    $("#getStart").html("检测中...");
 
     var times = $("#messageNumber").val();
 

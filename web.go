@@ -42,6 +42,8 @@ func Index(router *gin.Engine) {
 
 			wg.Add(1)
 			go utils.KafkaConsumer(kafkaInfo.KafkaIP, kafkaInfo.Message.Topic, kafkaInfo.Message.Number, wg, ch)
+
+			return
 		}
 
 		ch <- "数据不合法"

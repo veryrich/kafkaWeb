@@ -46,15 +46,15 @@ func consumerLoop(consumer sarama.Consumer, topic string, times int, ch chan int
 	for partition := range partitions {
 		wg.Add(1)
 		go func() {
-			consumePartition(consumer, int32(partition), times, topic, ch)
-			wg.Done()
+			consumePartition(consumer, int32(partition), times, topic, ch, &wg)
 		}()
 	}
 	wg.Wait()
 }
 
 // 开始消费消息
-func consumePartition(consumer sarama.Consumer, partition int32, times int, topic string, ch chan interface{}) {
+func consumePartition(consumer sarama.Consumer, partition int32, times int, topic string, ch chan interface{}, wg *sync.WaitGroup) {
+	defer wg.Done()
 	log.Println("Receving on partition", partition)
 	partitionConsumer, err := consumer.ConsumePartition(topic, partition, sarama.OffsetNewest)
 	if err != nil {
